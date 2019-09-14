@@ -11,7 +11,7 @@ package com.wxx.bj.designpattern.sington;
  * @author wangxinxin07
  * @date 2019/8/11
  */
-public class Sington {
+public class Sington implements Cloneable{
     /**
      * 类加载时，静态变量 single 会被实例化  【饿汉式单例】
      */
@@ -22,6 +22,13 @@ public class Sington {
      */
     private Sington() {
         System.out.println("Sington开始实例化");
+        if (single != null) {
+            try {
+                throw new Exception("实例化失败");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -31,5 +38,16 @@ public class Sington {
      */
     public static Sington getInstance() {
         return single;
+    }
+    public static void main(String[] args) {
+        Sington instance = getInstance();
+        System.out.println("instance = " + instance);
+
+        try {
+            Object clone = instance.clone();
+            System.out.println("clone = " + clone);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
     }
 }
